@@ -5,139 +5,102 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { getDecks } from '../lib/decks';
+import { site } from '../site';
+
+const crops = [
+  {
+    icon: '🌾',
+    title: 'Fragrant jasmine rice',
+    titleKm: 'អង្ករក្រអូប ផ្ការំដួល',
+    text: 'Soft, fragrant Phka Rumduol rice. It has won the World’s Best Rice award many times.',
+    textKm: 'អង្ករផ្ការំដួល ទន់ និងក្រអូប។ វាបានឈ្នះពានរង្វាន់អង្ករល្អបំផុតលើពិភពលោកជាច្រើនដង។',
+  },
+  {
+    icon: '🌿',
+    title: 'Kampot pepper',
+    titleKm: 'ម្រេចកំពត',
+    text: 'Famous black, red and white pepper from Kampot and Kep, with a protected name (GI).',
+    textKm: 'ម្រេចខ្មៅ ក្រហម និងស ដ៏ល្បីពីខេត្តកំពត និងកែប ដែលមានឈ្មោះការពារ (GI)។',
+  },
+  {
+    icon: '🥭',
+    title: 'Keo Romeat mango',
+    titleKm: 'ស្វាយកែវរមៀត',
+    text: 'Sweet, juicy Cambodian mangoes. Delicious fresh, dried, or in a shake.',
+    textKm: 'ស្វាយខ្មែរផ្អែម និងមានទឹកច្រើន។ ឆ្ងាញ់ពេលញ៉ាំស្រស់ ស្ងួត ឬក្រឡុក។',
+  },
+  {
+    icon: '🥜',
+    title: 'Cashew nuts',
+    titleKm: 'គ្រាប់ស្វាយចន្ទី',
+    text: 'Cambodia is one of the world’s biggest cashew growers. Crunchy, rich and healthy.',
+    textKm: 'កម្ពុជាជាប្រទេសមួយដែលដាំស្វាយចន្ទីច្រើនជាងគេលើពិភពលោក។ ស្រួយ ឆ្ងាញ់ និងល្អសម្រាប់សុខភាព។',
+  },
+  {
+    icon: '🍠',
+    title: 'Cassava',
+    titleKm: 'ដំឡូងមី',
+    text: 'A strong, important crop for food, flour and starch, grown across the country.',
+    textKm: 'ដំណាំសំខាន់ និងរឹងមាំ សម្រាប់ធ្វើអាហារ ម្សៅ និងម្សៅដំឡូង ដាំនៅទូទាំងប្រទេស។',
+  },
+  {
+    icon: '🍯',
+    title: 'Kampong Speu palm sugar',
+    titleKm: 'ស្ករត្នោតកំពង់ស្ពឺ',
+    text: 'Natural sugar from the sugar palm tree, Cambodia’s national tree. It also has a protected name (GI).',
+    textKm: 'ស្ករធម្មជាតិពីដើមត្នោត ដែលជាដើមឈើជាតិរបស់កម្ពុជា។ វាក៏មានឈ្មោះការពារ (GI) ដែរ។',
+  },
+];
+
+const values = [
+  { icon: '👩‍🌾', label: 'Grown by Khmer farmers', labelKm: 'ដាំដោយកសិករខ្មែរ' },
+  { icon: '🌱', label: 'Fresh from the field', labelKm: 'ស្រស់ពីចម្ការ' },
+  { icon: '🇰🇭', label: 'Proudly Cambodian', labelKm: 'ផលិតផលខ្មែរ ដោយមោទនភាព' },
+];
 
 const steps = [
   {
-    icon: '🧰',
-    title: 'Choose a stack',
-    titleKm: 'ជ្រើសរើស stack',
-    text: 'Pick the technology the AI will use. AI can help you choose. This week, it’s chosen for you.',
-    textKm: 'ជ្រើសរើសបច្ចេកវិទ្យាដែល AI នឹងប្រើ។ AI អាចជួយអ្នកជ្រើសរើសបាន។ សម្រាប់វគ្គនេះ យើងបានជ្រើសរើសរួចហើយ។',
+    icon: '🚜',
+    title: 'Farmers grow',
+    titleKm: 'កសិករដាំដុះ',
+    text: 'Khmer farmers plant and care for the crops, using their skills and knowledge of the land.',
+    textKm: 'កសិករខ្មែរដាំ និងថែទាំដំណាំ ដោយប្រើជំនាញ និងចំណេះដឹងអំពីដីរបស់ពួកគេ។',
   },
   {
-    icon: '💬',
-    title: 'Prompt',
-    titleKm: 'ប្រាប់ AI',
-    text: 'Describe the website you want, in plain words. English or Khmer.',
-    textKm: 'ពិពណ៌នាគេហទំព័រដែលអ្នកចង់បាន ជាពាក្យសាមញ្ញ។ ភាសាអង់គ្លេស ឬភាសាខ្មែរក៏បាន។',
+    icon: '🧺',
+    title: 'We collect and check',
+    titleKm: 'យើងប្រមូល និងពិនិត្យ',
+    text: 'We collect the harvest and check that every crop is clean and good quality.',
+    textKm: 'យើងប្រមូលផល ហើយពិនិត្យថាដំណាំនីមួយៗស្អាត និងមានគុណភាពល្អ។',
   },
   {
-    icon: '🔁',
-    title: 'Iterate',
-    titleKm: 'កែលម្អម្តងហើយម្តងទៀត',
-    text: 'Check the result and tell the AI what to improve. Repeat! This is the real skill.',
-    textKm: 'ពិនិត្យលទ្ធផល ហើយប្រាប់ AI ពីអ្វីដែលត្រូវកែ។ ធ្វើម្តងទៀត! នេះគឺជាជំនាញពិតប្រាកដ។',
-  },
-  {
-    icon: '🚀',
-    title: 'Ship it',
-    titleKm: 'ដាក់ឱ្យប្រើ',
-    text: 'Publish it to the internet, free, at a link you can share.',
-    textKm: 'ដាក់វានៅលើអ៊ីនធឺណិត ដោយឥតគិតថ្លៃ ជាមួយតំណភ្ជាប់ដែលអ្នកអាចចែករំលែកបាន។',
-  },
-];
-
-const stats = [
-  { value: '0', label: 'lines of code to memorize', labelKm: 'បន្ទាត់កូដដែលត្រូវទន្ទេញ' },
-  { value: '1', label: 'live website each', labelKm: 'គេហទំព័រផ្ទាល់ខ្លួនម្នាក់មួយ' },
-  { value: '$0', label: 'to publish it', labelKm: 'ដើម្បីដាក់វាលើអ៊ីនធឺណិត' },
-];
-
-const needs = [
-  {
-    title: 'An idea',
-    titleKm: 'គំនិតមួយ',
-    text: 'A business, a project, a club — anything you would want a website for.',
-    textKm: 'អាជីវកម្ម គម្រោង ក្លឹប — អ្វីក៏បានដែលអ្នកចង់មានគេហទំព័រ។',
-  },
-  {
-    title: 'A computer',
-    titleKm: 'កុំព្យូទ័រមួយ',
-    text: 'Mac or Windows. You will set it up yourself, with the AI as your guide.',
-    textKm: 'Mac ឬ Windows។ អ្នកនឹងរៀបចំវាដោយខ្លួនឯង ដោយមាន AI ជាអ្នកណែនាំ។',
-  },
-  {
-    title: 'A GitHub account',
-    titleKm: 'គណនី GitHub',
-    text: 'Free. This is where your website’s files are kept safe. We make it together on Day 1.',
-    textKm: 'ឥតគិតថ្លៃ។ ជាកន្លែងរក្សាទុកឯកសារគេហទំព័ររបស់អ្នកដោយសុវត្ថិភាព។ យើងបង្កើតវាជាមួយគ្នានៅថ្ងៃទី ១។',
-  },
-  {
-    title: 'A Cloudflare account',
-    titleKm: 'គណនី Cloudflare',
-    text: 'Free. This puts your website on the internet.',
-    textKm: 'ឥតគិតថ្លៃ។ វាដាក់គេហទំព័ររបស់អ្នកនៅលើអ៊ីនធឺណិត។',
+    icon: '📦',
+    title: 'You enjoy it',
+    titleKm: 'អ្នករីករាយជាមួយវា',
+    text: 'Contact us to buy, and taste the best of Cambodia at home or in your business.',
+    textKm: 'ទាក់ទងយើងដើម្បីទិញ ហើយភ្លក់រសជាតិល្អបំផុតរបស់កម្ពុជា នៅផ្ទះ ឬក្នុងអាជីវកម្មរបស់អ្នក។',
   },
 ];
 
 const faqs = [
   {
-    q: 'Do I need to know how to code?',
-    qKm: 'តើខ្ញុំត្រូវចេះសរសេរកូដទេ?',
-    a: 'No. You will see some code, and you will learn what it is, but the AI writes it. Your job is to know what you want and to say it clearly.',
-    aKm: 'ទេ។ អ្នកនឹងឃើញកូដខ្លះ ហើយនឹងរៀនថាវាជាអ្វី ប៉ុន្តែ AI ជាអ្នកសរសេរវា។ ការងាររបស់អ្នក គឺដឹងថាអ្នកចង់បានអ្វី ហើយនិយាយវាឱ្យបានច្បាស់។',
+    q: 'How can I buy?',
+    qKm: 'តើខ្ញុំអាចទិញដោយរបៀបណា?',
+    a: 'Send us a message on Telegram or call us. Tell us which crops you want and how much.',
+    aKm: 'ផ្ញើសារមកយើងតាម Telegram ឬទូរសព្ទមកយើង។ ប្រាប់យើងថាអ្នកចង់បានដំណាំអ្វី និងចំនួនប៉ុន្មាន។',
   },
   {
-    q: 'Can my website be in Khmer?',
-    qKm: 'តើគេហទំព័ររបស់ខ្ញុំអាចជាភាសាខ្មែរបានទេ?',
-    a: 'Yes. You can ask the AI to write in Khmer, or to make the site in both languages. Always have a Khmer speaker check the words — you know the language better than the AI does.',
-    aKm: 'បាន។ អ្នកអាចប្រាប់ AI ឱ្យសរសេរជាភាសាខ្មែរ ឬធ្វើគេហទំព័រជាពីរភាសា។ តែងតែឱ្យអ្នកចេះភាសាខ្មែរពិនិត្យពាក្យពេចន៍ — អ្នកស្គាល់ភាសានេះច្បាស់ជាង AI។',
+    q: 'Can you send to other countries?',
+    qKm: 'តើអាចផ្ញើទៅប្រទេសផ្សេងបានទេ?',
+    a: 'Please contact us, and we will tell you what is possible for your country.',
+    aKm: 'សូមទាក់ទងយើង ហើយយើងនឹងប្រាប់អ្នកពីអ្វីដែលអាចធ្វើបានសម្រាប់ប្រទេសរបស់អ្នក។',
   },
   {
-    q: 'Do I keep my website after the workshop?',
-    qKm: 'តើខ្ញុំនៅតែមានគេហទំព័ររបស់ខ្ញុំក្រោយវគ្គសិក្សាទេ?',
-    a: 'Yes. Everything is in your own GitHub and Cloudflare accounts. It is yours, and it stays online.',
-    aKm: 'បាទ/ចាស។ អ្វីៗទាំងអស់នៅក្នុងគណនី GitHub និង Cloudflare ផ្ទាល់ខ្លួនរបស់អ្នក។ វាជារបស់អ្នក ហើយវានៅតែដំណើរការលើអ៊ីនធឺណិត។',
+    q: 'What does GI mean?',
+    qKm: 'តើ GI មានន័យដូចម្តេច?',
+    a: 'GI means “Geographical Indication”. It is a protected name: only pepper grown in the Kampot area can be called Kampot pepper.',
+    aKm: 'GI មានន័យថា “សម្គាល់ភូមិសាស្ត្រ”។ វាជាឈ្មោះដែលត្រូវបានការពារ៖ មានតែម្រេចដែលដាំនៅតំបន់កំពតប៉ុណ្ណោះ ទើបអាចហៅថាម្រេចកំពតបាន។',
   },
-  {
-    q: 'What if the AI makes a mistake?',
-    qKm: 'ចុះបើ AI ធ្វើខុស?',
-    a: 'It will! Tell it what is wrong, the same way you would tell a person. If things get really messy, you can always go back to an earlier version.',
-    aKm: 'វានឹងធ្វើខុសម្តងម្កាល! ប្រាប់វាថាអ្វីខុស ដូចដែលអ្នកប្រាប់មនុស្សម្នាក់។ ប្រសិនបើអ្វីៗរញ៉េរញ៉ៃខ្លាំង អ្នកតែងតែអាចត្រឡប់ទៅកំណែមុនវិញបាន។',
-  },
-];
-
-const decks = getDecks();
-
-// The "Get started" prompt that students copy into Claude. Each block is one
-// paragraph; the copy buttons join them with blank lines.
-const starterPrompt = [
-  {
-    en: 'I’m a student in Cambodia, learning to use Claude Code to build software. My instructor gave me this message to start with.',
-    km: 'ខ្ញុំជាសិស្សនៅកម្ពុជា កំពុងរៀនប្រើ Claude Code ដើម្បីបង្កើតកម្មវិធី។ គ្រូរបស់ខ្ញុំបានផ្តល់សារនេះឱ្យខ្ញុំ សម្រាប់ចាប់ផ្តើម។',
-  },
-  {
-    en: 'Please don’t assume I know anything about programming, or that I speak English well. Use short, simple English, and add a Khmer translation under your messages. If I write in Khmer, reply in Khmer.',
-    km: 'សូមកុំសន្មតថាខ្ញុំចេះអ្វីអំពីការសរសេរកម្មវិធី ឬថាខ្ញុំចេះភាសាអង់គ្លេសច្បាស់។ សូមប្រើភាសាអង់គ្លេសខ្លីៗ និងសាមញ្ញ ហើយបន្ថែមការបកប្រែជាភាសាខ្មែរនៅក្រោមសាររបស់អ្នក។ ប្រសិនបើខ្ញុំសរសេរជាភាសាខ្មែរ សូមឆ្លើយជាភាសាខ្មែរ។',
-  },
-  {
-    en: 'My instructor made the GitHub template repo teamdandelion/vibe-code-cambodia to help me get started. Please help me, one step at a time:',
-    km: 'គ្រូរបស់ខ្ញុំបានបង្កើត GitHub template repo teamdandelion/vibe-code-cambodia ដើម្បីជួយខ្ញុំចាប់ផ្តើម។ សូមជួយខ្ញុំ ម្តងមួយជំហាន៖',
-  },
-  {
-    en: '1. Set up my computer for software development. It may be a Mac or Windows. (The repo has guides in docs/mac-setup.md and docs/windows-setup.md.)\n2. Make a GitHub account if I don’t have one, and connect it to this computer.\n3. Make my own repo from the template, and get the website running on my computer.\n4. Help me turn it into my own website.',
-    km: '១. រៀបចំកុំព្យូទ័ររបស់ខ្ញុំសម្រាប់ការអភិវឌ្ឍកម្មវិធី។ វាអាចជា Mac ឬ Windows។ (repo មានការណែនាំនៅក្នុង docs/mac-setup.md និង docs/windows-setup.md។)\n២. បង្កើតគណនី GitHub ប្រសិនបើខ្ញុំមិនទាន់មាន ហើយភ្ជាប់វាទៅកុំព្យូទ័រនេះ។\n៣. បង្កើត repo ផ្ទាល់ខ្លួនរបស់ខ្ញុំពី template ហើយធ្វើឱ្យគេហទំព័រដំណើរការនៅលើកុំព្យូទ័ររបស់ខ្ញុំ។\n៤. ជួយខ្ញុំប្តូរវាឱ្យក្លាយជាគេហទំព័រផ្ទាល់ខ្លួនរបស់ខ្ញុំ។',
-  },
-  {
-    en: 'Ask me questions to find out what I’d like to build, and work with me. Explain each step before you do it, and wait for me when I need to do something myself.',
-    km: 'សួរខ្ញុំសំណួរ ដើម្បីដឹងថាខ្ញុំចង់បង្កើតអ្វី ហើយធ្វើការជាមួយខ្ញុំ។ ពន្យល់ជំហាននីមួយៗ មុនពេលអ្នកធ្វើវា ហើយរង់ចាំខ្ញុំ នៅពេលខ្ញុំត្រូវធ្វើអ្វីមួយដោយខ្លួនឯង។',
-  },
-];
-const promptEn = starterPrompt.map((b) => b.en).join('\n\n');
-const promptKm = starterPrompt.map((b) => b.km).join('\n\n');
-
-const startSteps = [
-  {
-    text: 'Install the Claude app and sign in. On Windows, install Git first.',
-    km: 'ដំឡើងកម្មវិធី Claude ហើយចូលគណនី។ នៅលើ Windows សូមដំឡើង Git ជាមុនសិន។',
-    link: { href: '/setup', label: 'How?', labelKm: 'ធ្វើដូចម្តេច?' },
-  },
-  {
-    text: 'Open the Code tab.',
-    km: 'បើកផ្ទាំង Code។',
-  },
-  { text: 'Copy this message, paste it in, and press Enter.', km: 'ចម្លងសារនេះ បិទភ្ជាប់វា ហើយចុច Enter។' },
 ];
 ---
 
@@ -147,245 +110,228 @@ const startSteps = [
   <main>
     <!-- HERO -->
     <section class="relative overflow-hidden">
-      <div class="pointer-events-none absolute -top-40 -right-40 size-[36rem] rounded-full bg-sun/25 blur-3xl"></div>
+      <div class="pointer-events-none absolute -top-40 -right-40 size-[36rem] rounded-full bg-sun/30 blur-3xl"></div>
       <div class="pointer-events-none absolute -bottom-40 -left-40 size-[30rem] rounded-full bg-brand/15 blur-3xl"></div>
 
       <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-2">
         <div>
           <p class="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white/70 px-3 py-1 text-sm font-medium">
-            <span class="size-2 rounded-full bg-leaf"></span>
-            A vibe coding workshop at New Hope Cambodia
+            <span class="size-2 rounded-full bg-brand"></span>
+            From the fields of Cambodia
           </p>
           <h1 class="mt-6 font-display text-5xl leading-[1.02] font-extrabold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-            Build a real website by <span class="text-brand">talking</span> to AI.
+            The best crops of <span class="text-brand">Cambodia.</span>
           </h1>
-          <p lang="km" class="mt-4 text-xl text-ink/70">បង្កើតគេហទំព័រជាមួយ AI</p>
+          <p lang="km" class="mt-4 text-2xl font-semibold text-ink/80">កសិដ្ឋានខ្មែរ · ដំណាំល្អបំផុតរបស់កម្ពុជា</p>
           <p class="mt-6 max-w-xl text-lg text-muted">
-            No coding experience needed. Describe the website you want, watch the AI build it, and publish it to the internet by the end of the week.
-            <span class="km" lang="km">មិនចាំបាច់មានបទពិសោធន៍សរសេរកូដទេ។ ពិពណ៌នាគេហទំព័រដែលអ្នកចង់បាន មើល AI បង្កើតវា ហើយដាក់វានៅលើអ៊ីនធឺណិតត្រឹមចុងសប្តាហ៍។</span>
+            Fragrant rice, Kampot pepper, sweet mangoes and more, grown with care by Khmer farmers and full of real Cambodian taste.
+            <span class="km" lang="km">អង្ករក្រអូប ម្រេចកំពត ស្វាយផ្អែម និងច្រើនទៀត ដាំដោយយកចិត្តទុកដាក់ដោយកសិករខ្មែរ និងមានរសជាតិខ្មែរពិតប្រាកដ។</span>
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#start" class="rounded-full bg-brand px-6 py-3 font-semibold text-paper shadow-lg shadow-brand/25 transition hover:bg-brand-dark">
-              Get started ↓ <span lang="km" class="font-khmer font-normal opacity-80">ចាប់ផ្តើម</span>
+            <a href="#crops" class="rounded-full bg-brand px-6 py-3 font-semibold text-paper shadow-lg shadow-brand/25 transition hover:bg-brand-dark">
+              See our crops → <span lang="km" class="font-khmer font-normal opacity-80">មើលដំណាំ</span>
             </a>
-            <a href="/lesson" class="rounded-full border border-ink/15 bg-white px-6 py-3 font-semibold transition hover:border-ink/40">
-              See the lessons → <span lang="km" class="font-khmer font-normal opacity-60">មេរៀន</span>
+            <a href="#contact" class="rounded-full border border-ink/15 bg-white px-6 py-3 font-semibold transition hover:border-ink/40">
+              Contact us <span lang="km" class="font-khmer font-normal opacity-60">ទាក់ទងយើង</span>
             </a>
           </div>
         </div>
 
-        <!-- Illustration: a prompt on the left becomes a website on the right -->
+        <!-- Illustration: sunset over Cambodian rice fields, with sugar palms and
+             Angkor Wat far away. Drawn in SVG, so it is tiny and stays sharp. -->
         <div class="relative" aria-hidden="true">
-          <div class="rounded-2xl bg-ink p-5 font-mono text-sm text-paper shadow-2xl">
-            <div class="mb-4 flex gap-1.5">
-              <span class="size-3 rounded-full bg-brand"></span>
-              <span class="size-3 rounded-full bg-sun"></span>
-              <span class="size-3 rounded-full bg-leaf"></span>
-            </div>
-            <p class="text-sun">&gt; Make a website for my family's bakery in Phnom Penh.</p>
-            <p class="mt-1 text-sun">&nbsp;&nbsp;Warm colors, our menu, and a map.</p>
-            <p class="mt-3 text-paper/60">✓ Created homepage</p>
-            <p class="text-paper/60">✓ Added menu with 6 items</p>
-            <p class="text-paper/60">✓ Added map and opening hours</p>
-            <p class="mt-3 animate-pulse">▍</p>
-          </div>
-          <div class="relative -mt-6 mr-2 ml-auto w-60 rotate-[3deg] rounded-xl border border-ink/10 bg-white p-4 shadow-xl sm:w-72">
-            <div class="h-20 rounded-lg bg-gradient-to-br from-sun to-brand"></div>
-            <p class="mt-3 font-display font-bold">Sokha's Bakery</p>
-            <p class="text-xs text-muted">Fresh bread every morning since 1998</p>
-            <div class="mt-3 grid grid-cols-3 gap-2">
-              <div class="h-8 rounded bg-paper"></div>
-              <div class="h-8 rounded bg-paper"></div>
-              <div class="h-8 rounded bg-paper"></div>
-            </div>
+          <svg viewBox="0 0 400 400" class="mx-auto block aspect-square w-full max-w-md rounded-[2.5rem] shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="frame"><rect width="400" height="400" rx="40" /></clipPath>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f0a85a" />
+                <stop offset="0.45" stop-color="#f7cf86" />
+                <stop offset="1" stop-color="#fcefd2" />
+              </linearGradient>
+              <radialGradient id="glow">
+                <stop offset="0" stop-color="#fff6d8" stop-opacity="0.9" />
+                <stop offset="1" stop-color="#fff6d8" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f9dc9c" />
+                <stop offset="1" stop-color="#e9b86a" />
+              </linearGradient>
+            </defs>
+            <g clip-path="url(#frame)">
+              <!-- Sky, sun and birds -->
+              <rect width="400" height="400" fill="url(#sky)" />
+              <circle cx="200" cy="168" r="110" fill="url(#glow)" />
+              <circle cx="200" cy="168" r="44" fill="#fde7a8" />
+              <g fill="none" stroke="#7a4a2a" stroke-width="2" stroke-linecap="round" opacity="0.55">
+                <path d="M92 86 q6 -6 12 0 q6 -6 12 0" />
+                <path d="M126 70 q4 -4 8 0 q4 -4 8 0" />
+                <path d="M290 98 q5 -5 10 0 q5 -5 10 0" />
+              </g>
+
+              <!-- Angkor Wat on the horizon -->
+              <g fill="#b9784a" opacity="0.5">
+                <rect x="150" y="214" width="100" height="14" />
+                <rect x="160" y="206" width="80" height="10" />
+                <path d="M200 158 C204 178 210 196 213 208 H187 C190 196 196 178 200 158Z" />
+                <path d="M174 176 C177 190 181 200 183 208 H165 C167 200 171 190 174 176Z" />
+                <path d="M226 176 C229 190 233 200 235 208 H217 C219 200 223 190 226 176Z" />
+                <path d="M156 192 C158 200 160 206 162 212 H150 C152 206 154 200 156 192Z" />
+                <path d="M244 192 C246 200 248 206 250 212 H238 C240 206 242 200 244 192Z" />
+              </g>
+
+              <!-- Distant trees -->
+              <path d="M0 234 Q25 226 50 232 Q75 224 100 231 Q125 236 150 230 Q175 225 200 231 Q225 236 250 229 Q275 224 300 231 Q325 235 350 228 Q375 224 400 230 V250 H0Z" fill="#6f8f3e" opacity="0.75" />
+
+              <!-- Sugar palms (Cambodia's national tree) -->
+              {[
+                { x: 58, top: 120, s: 1 },
+                { x: 92, top: 158, s: 0.75 },
+                { x: 338, top: 132, s: 0.9 },
+              ].map((p) => (
+                <g>
+                  <path d={`M${p.x} 246 C${p.x - 2} 200 ${p.x + 2} 170 ${p.x} ${p.top}`} stroke="#4a3322" stroke-width={4 * p.s} fill="none" />
+                  <g transform={`translate(${p.x} ${p.top}) scale(${p.s})`} stroke="#3f5a22" stroke-width="3.5" stroke-linecap="round">
+                    {Array.from({ length: 13 }, (_, i) => {
+                      const a = (Math.PI * (i + 0.5)) / 13 + Math.PI;
+                      return <line x1="0" y1="0" x2={(Math.cos(a) * 30).toFixed(1)} y2={(Math.sin(a) * 26 + 6).toFixed(1)} />;
+                    })}
+                  </g>
+                </g>
+              ))}
+
+              <!-- Rice paddies, with water reflecting the sky -->
+              <path d="M0 246 Q100 238 200 246 T400 244 V400 H0Z" fill="#8fbf4d" />
+              <path d="M0 262 Q120 254 230 262 T400 260 V276 Q300 270 200 276 T0 274Z" fill="url(#water)" opacity="0.85" />
+              <ellipse cx="200" cy="268" rx="36" ry="4" fill="#fff3cf" opacity="0.8" />
+              <path d="M0 280 Q140 270 260 282 T400 278 V400 H0Z" fill="#6aa23a" />
+              <path d="M0 302 Q100 296 210 304 T400 300 V312 Q300 308 200 314 T0 310Z" fill="url(#water)" opacity="0.6" />
+              <path d="M0 318 Q120 306 250 318 T400 314 V400 H0Z" fill="#4d8a2a" />
+              <path d="M0 350 Q140 338 260 350 T400 346 V400 H0Z" fill="#3a7a1f" />
+
+              <!-- Rows of young rice -->
+              <g stroke="#3f7a22" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7">
+                {Array.from({ length: 26 }, (_, i) => {
+                  const x = 8 + i * 15.5;
+                  const y = 292 + (i % 2) * 3;
+                  return <path d={`M${x} ${y} q-3 -4 -5 -7 M${x} ${y} v-8 M${x} ${y} q3 -4 5 -7`} />;
+                })}
+              </g>
+
+              <!-- Golden rice stalks in front -->
+              {Array.from({ length: 11 }, (_, i) => {
+                const x = 14 + i * 37 + (i % 2) * 8;
+                const h = 58 + (i % 3) * 14;
+                const bend = i % 2 ? 16 : -14;
+                return (
+                  <g>
+                    <path d={`M${x} 404 Q${x + bend / 3} ${404 - h / 2} ${x + bend} ${404 - h}`} stroke="#5b8f2a" stroke-width="3" fill="none" />
+                    <path d={`M${x} 404 Q${x - 10} ${404 - h / 3} ${x - 18} ${404 - h / 2}`} stroke="#4d8a2a" stroke-width="3" fill="none" />
+                    {Array.from({ length: 5 }, (_, j) => (
+                      <ellipse
+                        cx={x + bend + (bend > 0 ? j * 2.5 : -j * 2.5)}
+                        cy={404 - h + j * 7}
+                        rx="3.2"
+                        ry="5.5"
+                        fill={j % 2 ? '#e8b33a' : '#f2c75a'}
+                        transform={`rotate(${bend > 0 ? 25 : -25} ${x + bend + (bend > 0 ? j * 2.5 : -j * 2.5)} ${404 - h + j * 7})`}
+                      />
+                    ))}
+                  </g>
+                );
+              })}
+            </g>
+          </svg>
+          <div class="absolute -top-4 left-2 rotate-[-4deg] rounded-2xl bg-white px-4 py-3 shadow-xl sm:left-6">
+            <p class="font-display font-bold">🥭 🌿 🥜 🍯</p>
+            <p class="text-xs text-muted">6 crops, 1 proud country</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- GET STARTED: the message students paste into Claude -->
-    <section id="start" class="scroll-mt-20 border-t border-ink/10 bg-white">
-      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.5fr]">
-        <div>
-          <p class="font-semibold text-brand">Get started <span lang="km" class="font-khmer font-normal">· ចាប់ផ្តើម</span></p>
-          <h2 class="mt-2 font-display text-4xl font-extrabold tracking-tight text-balance sm:text-5xl">Send this message to Claude.</h2>
-          <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">ផ្ញើសារនេះទៅ Claude។</p>
-          <p class="mt-4 text-lg text-muted">
-            Claude will help you set up your computer and build your website, one step at a time.
-            <span class="km" lang="km">Claude នឹងជួយអ្នករៀបចំកុំព្យូទ័រ និងបង្កើតគេហទំព័ររបស់អ្នក ម្តងមួយជំហាន។</span>
-          </p>
-          <ol class="mt-8 space-y-4">
-            {
-              startSteps.map((step, i) => (
-                <li class="flex gap-4">
-                  <span class="grid size-8 shrink-0 place-items-center rounded-full bg-brand font-display font-bold text-paper">{i + 1}</span>
-                  <p class="pt-1">
-                    {step.text}{' '}
-                    {step.link && (
-                      <a href={step.link.href} class="font-semibold text-brand underline underline-offset-2">
-                        {step.link.label} <span lang="km" class="font-khmer font-normal">{step.link.labelKm}</span>
-                      </a>
-                    )}
-                    <span class="km text-muted" lang="km">{step.km}</span>
-                  </p>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-
-        <div class="relative rounded-2xl border-l-4 border-sun bg-paper p-5 pt-16 shadow-xl shadow-ink/5 sm:p-8 sm:pt-16">
-          <div class="absolute top-4 right-4 left-4 flex flex-wrap justify-end gap-2 sm:left-auto">
-            <button type="button" class="prompt-copy rounded-full bg-brand px-4 py-1.5 text-sm font-semibold text-paper transition hover:bg-brand-dark" data-copy={promptEn}>
-              Copy message
-            </button>
-            <button type="button" lang="km" class="prompt-copy rounded-full border border-brand px-4 py-1.5 font-khmer text-sm font-semibold text-brand transition hover:bg-brand hover:text-paper" data-copy={promptKm}>
-              ចម្លងជាភាសាខ្មែរ
-            </button>
-          </div>
-          {
-            starterPrompt.map((block) => (
-              <p class="mb-4 whitespace-pre-line last:mb-0">
-                {block.en}
-                <span class="km text-muted whitespace-pre-line" lang="km">{block.km}</span>
-              </p>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <!-- STATS -->
+    <!-- VALUES -->
     <section class="border-y border-ink/10 bg-white">
-      <dl class="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 sm:px-6 md:grid-cols-3">
+      <ul class="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6">
         {
-          stats.map((s) => (
-            <div>
-              <dt class="sr-only">{s.label}</dt>
-              <dd class="font-display text-4xl font-extrabold text-brand">{s.value}</dd>
-              <dd class="mt-1 text-sm text-muted">
-                {s.label}
-                <span class="km" lang="km">{s.labelKm}</span>
-              </dd>
-            </div>
+          values.map((v) => (
+            <li class="flex items-center gap-4">
+              <span class="grid size-12 shrink-0 place-items-center rounded-full bg-paper text-2xl">{v.icon}</span>
+              <span class="font-display text-lg font-bold">
+                {v.label}
+                <span class="km text-base" lang="km">{v.labelKm}</span>
+              </span>
+            </li>
           ))
         }
-      </dl>
+      </ul>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how" class="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
-      <p class="font-semibold text-brand">How it works <span lang="km" class="font-khmer font-normal">· របៀបដំណើរការ</span></p>
+    <!-- CROPS -->
+    <section id="crops" class="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+      <p class="font-semibold text-brand">Our crops <span lang="km" class="font-khmer font-normal">· ដំណាំរបស់យើង</span></p>
       <h2 class="mt-2 max-w-2xl font-display text-4xl font-extrabold tracking-tight text-balance sm:text-5xl">
-        Four steps from idea to live website.
+        Six crops Cambodia is proud of.
       </h2>
-      <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">បួនជំហាន ពីគំនិតមួយ ទៅជាគេហទំព័រដែលដំណើរការពិតប្រាកដ។</p>
-      <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">ដំណាំប្រាំមួយមុខ ដែលកម្ពុជាមានមោទនភាព។</p>
+      <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
-          steps.map((s, i) => (
-            <li class="rounded-2xl border border-ink/10 bg-white p-6">
-              <div class="flex items-center justify-between">
-                <span class="text-3xl">{s.icon}</span>
-                <span class="font-display text-sm font-bold text-ink/30">0{i + 1}</span>
-              </div>
+          crops.map((c) => (
+            <li class="rounded-2xl border border-ink/10 bg-white p-6 transition hover:-translate-y-1 hover:border-brand hover:shadow-xl">
+              <span class="text-4xl">{c.icon}</span>
               <h3 class="mt-4 font-display text-xl font-bold">
-                {s.title}
-                <span class="km text-base" lang="km">{s.titleKm}</span>
+                {c.title}
+                <span class="km text-base" lang="km">{c.titleKm}</span>
               </h3>
               <p class="mt-2 text-muted">
-                {s.text}
-                <span class="km" lang="km">{s.textKm}</span>
+                {c.text}
+                <span class="km" lang="km">{c.textKm}</span>
               </p>
             </li>
           ))
         }
-      </ol>
+      </ul>
+    </section>
+
+    <!-- FIELD TO YOU -->
+    <section id="how" class="scroll-mt-20 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+        <p class="font-semibold text-brand">Field to you <span lang="km" class="font-khmer font-normal">· ពីចម្ការ ដល់អ្នក</span></p>
+        <h2 class="mt-2 max-w-2xl font-display text-4xl font-extrabold tracking-tight text-balance sm:text-5xl">
+          From a Khmer farm to your table.
+        </h2>
+        <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">ពីកសិដ្ឋានខ្មែរ ដល់តុអាហាររបស់អ្នក។</p>
+        <ol class="mt-12 grid gap-4 md:grid-cols-3">
+          {
+            steps.map((s, i) => (
+              <li class="rounded-2xl bg-paper p-6">
+                <div class="flex items-center justify-between">
+                  <span class="text-3xl">{s.icon}</span>
+                  <span class="font-display text-sm font-bold text-ink/30">0{i + 1}</span>
+                </div>
+                <h3 class="mt-4 font-display text-xl font-bold">
+                  {s.title}
+                  <span class="km text-base" lang="km">{s.titleKm}</span>
+                </h3>
+                <p class="mt-2 text-muted">
+                  {s.text}
+                  <span class="km" lang="km">{s.textKm}</span>
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
     </section>
 
     <!-- BIG STATEMENT -->
     <section class="bg-ink text-paper">
       <div class="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 sm:py-28">
         <p class="font-display text-3xl leading-tight font-bold text-balance sm:text-5xl">
-          AI turns out to be <span class="text-sun">very good at writing code.</span> So the most useful skill now is knowing what to ask for.
+          When you choose Cambodian crops, you <span class="text-sun">support Khmer farmers</span> and their families.
         </p>
         <p lang="km" class="km mt-6 text-xl sm:text-2xl">
-          AI ពិតជាពូកែសរសេរកូដណាស់។ ដូច្នេះ ជំនាញដែលមានប្រយោជន៍បំផុតនាពេលនេះ គឺការដឹងថាត្រូវស្នើសុំអ្វី។
+          ពេលអ្នកជ្រើសរើសដំណាំខ្មែរ អ្នកគាំទ្រកសិករខ្មែរ និងគ្រួសាររបស់ពួកគេ។
         </p>
-      </div>
-    </section>
-
-    <!-- LESSONS -->
-    <section id="lessons" class="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
-      <p class="font-semibold text-brand">Lessons <span lang="km" class="font-khmer font-normal">· មេរៀន</span></p>
-      <h2 class="mt-2 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">Start here.</h2>
-      <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">ចាប់ផ្តើមនៅទីនេះ។</p>
-      <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {
-          decks.map((deck) => (
-            <a
-              href={`/lesson/${deck.slug}`}
-              class="group flex flex-col rounded-2xl border border-ink/10 bg-white p-6 transition hover:-translate-y-1 hover:border-brand hover:shadow-xl"
-            >
-              <span class="font-display text-sm font-bold tracking-wide text-brand uppercase">{deck.eyebrow}</span>
-              <span class="mt-2 font-display text-2xl font-bold">
-                {deck.title.replace(/^[^—]+—\s*/, '')}
-                {deck.titleKm && <span class="km text-lg" lang="km">{deck.titleKm.replace(/^[^—]+—\s*/, '')}</span>}
-              </span>
-              <span class="mt-2 flex-1 text-muted">
-                {deck.subtitle}
-                {deck.subtitleKm && <span class="km" lang="km">{deck.subtitleKm}</span>}
-              </span>
-              <span class="mt-6 font-semibold text-brand">Open slides <span class="inline-block transition group-hover:translate-x-1">→</span> <span lang="km" class="font-khmer font-normal">បើកស្លាយ</span></span>
-            </a>
-          ))
-        }
-        <a
-          href="/setup"
-          class="group flex flex-col rounded-2xl border border-ink/10 bg-white p-6 transition hover:-translate-y-1 hover:border-brand hover:shadow-xl"
-        >
-          <span class="font-display text-sm font-bold tracking-wide text-brand uppercase">Guide</span>
-          <span class="mt-2 font-display text-2xl font-bold">
-            Set up your computer
-            <span class="km text-lg" lang="km">រៀបចំកុំព្យូទ័ររបស់អ្នក</span>
-          </span>
-          <span class="mt-2 flex-1 text-muted">
-            Install the Claude app, then let the AI set up the rest of your computer.
-            <span class="km" lang="km">ដំឡើងកម្មវិធី Claude បន្ទាប់មកឱ្យ AI រៀបចំផ្នែកផ្សេងទៀតនៃកុំព្យូទ័ររបស់អ្នក។</span>
-          </span>
-          <span class="mt-6 font-semibold text-brand">Open the guide <span class="inline-block transition group-hover:translate-x-1">→</span> <span lang="km" class="font-khmer font-normal">បើកការណែនាំ</span></span>
-        </a>
-      </div>
-    </section>
-
-    <!-- WHAT YOU NEED -->
-    <section class="bg-white">
-      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1fr_1.4fr]">
-        <div>
-          <p class="font-semibold text-brand">Before you start <span lang="km" class="font-khmer font-normal">· មុនពេលចាប់ផ្តើម</span></p>
-          <h2 class="mt-2 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">What you need</h2>
-          <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">អ្វីដែលអ្នកត្រូវការ</p>
-          <p class="mt-4 text-lg text-muted">
-            That's the whole list. Everything else, the AI will help you install.
-            <span class="km" lang="km">នោះហើយជាបញ្ជីទាំងមូល។ អ្វីៗផ្សេងទៀត AI នឹងជួយអ្នកដំឡើង។</span>
-          </p>
-        </div>
-        <ul class="grid gap-4 sm:grid-cols-2">
-          {
-            needs.map((n) => (
-              <li class="rounded-2xl bg-paper p-6">
-                <span class="grid size-8 place-items-center rounded-full bg-leaf text-sm font-bold text-paper">✓</span>
-                <h3 class="mt-4 font-display text-lg font-bold">
-                  {n.title}
-                  <span class="km text-base" lang="km">{n.titleKm}</span>
-                </h3>
-                <p class="mt-1 text-muted">
-                  {n.text}
-                  <span class="km" lang="km">{n.textKm}</span>
-                </p>
-              </li>
-            ))
-          }
-        </ul>
       </div>
     </section>
 
@@ -414,40 +360,26 @@ const startSteps = [
       </div>
     </section>
 
-    <!-- CALL TO ACTION -->
-    <section class="px-4 pb-20 sm:px-6">
+    <!-- CONTACT -->
+    <section id="contact" class="scroll-mt-20 px-4 pb-20 sm:px-6">
       <div class="mx-auto max-w-6xl rounded-3xl bg-brand px-6 py-16 text-center text-paper sm:py-20">
-        <h2 class="font-display text-4xl font-extrabold tracking-tight text-balance sm:text-5xl">Ready? Let's build something.</h2>
-        <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">រួចរាល់ហើយឬនៅ? តោះបង្កើតអ្វីមួយ។</p>
-        <a href="/lesson/day-1" class="mt-8 inline-block rounded-full bg-paper px-8 py-4 font-semibold text-ink transition hover:bg-sun">
-          Start with Day 1 → <span lang="km" class="font-khmer font-normal">ចាប់ផ្តើមថ្ងៃទី ១</span>
-        </a>
+        <h2 class="font-display text-4xl font-extrabold tracking-tight text-balance sm:text-5xl">Taste the best of Cambodia.</h2>
+        <p class="km mt-3 text-xl font-semibold sm:text-2xl" lang="km">ភ្លក់រសជាតិល្អបំផុតរបស់កម្ពុជា។</p>
+        <p class="mx-auto mt-4 max-w-xl text-paper/80">
+          Message us to ask about our crops, prices and orders.
+          <span class="km" lang="km">ផ្ញើសារមកយើង ដើម្បីសួរអំពីដំណាំ តម្លៃ និងការកុម្ម៉ង់។</span>
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href={site.telegram} class="rounded-full bg-paper px-8 py-4 font-semibold text-ink transition hover:bg-sun">
+            Message on Telegram <span lang="km" class="font-khmer font-normal opacity-70">ផ្ញើសារ</span>
+          </a>
+          <a href={site.phoneHref} class="rounded-full border border-paper/40 px-8 py-4 font-semibold transition hover:bg-paper/10">
+            Call {site.phone}
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
   <Footer />
 </Base>
-
-<script>
-  // "Copy message" buttons on the Get started prompt.
-  for (const button of document.querySelectorAll<HTMLButtonElement>('.prompt-copy')) {
-    const label = button.textContent;
-    button.addEventListener('click', async () => {
-      const text = button.dataset.copy ?? '';
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch {
-        // Older browsers: copy through a hidden text box instead.
-        const box = document.createElement('textarea');
-        box.value = text;
-        document.body.append(box);
-        box.select();
-        document.execCommand('copy');
-        box.remove();
-      }
-      button.textContent = button.lang === 'km' ? 'បានចម្លង ✓' : 'Copied ✓';
-      setTimeout(() => (button.textContent = label), 2000);
-    });
-  }
-</script>
